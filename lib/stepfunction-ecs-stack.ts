@@ -36,6 +36,7 @@ export class StepfunctionEcsStack extends cdk.Stack {
             vpc: ecsVpc,
         });
 
+
         // Write the results to parquet with an ECS Task
         const ecsTask = new tasks.EcsRunTask(
             this,
@@ -51,13 +52,14 @@ export class StepfunctionEcsStack extends cdk.Stack {
                 ),
                 containerOverrides: [
                     {
+                        containerDefinition: taskDefinition.defaultContainer!,
                         environment: [
                             {
                                 name: "QUERY_EXECUTION_ID",
                                 value: "dummy-query-execution-id",
                             }
                         ]
-                    } as tasks.ContainerOverride
+                    }
                 ],
                 propagatedTagSource: ecs.PropagatedTagSource.TASK_DEFINITION,
             }
